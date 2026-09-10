@@ -8,7 +8,7 @@ class HomePage {
         // Locators
         this.loginLink = page.getByRole('link', { name: 'Log in' });
         this.signUpLink = page.getByRole('link', { name: 'Sign up' });
-        this.cartLink = page.getByRole('link', { name: 'Cart' });
+        this.cartLink = page.locator('#cartur');
     }
 
     // Methods
