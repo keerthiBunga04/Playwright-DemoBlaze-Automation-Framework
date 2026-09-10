@@ -1,0 +1,10 @@
+{
+    "customer": {
+        "name": "Ketty",
+        "country": "India",
+        "city": "Bangalore",
+        "card": "4111111111111111",
+        "month": "12",
+        "year": "2028"
+    }
+}
