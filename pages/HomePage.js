@@ -1,5 +1,3 @@
-const { BASE_URL } = require('../utils/Constants');
-
 class HomePage {
 
     constructor(page) {
@@ -13,7 +11,7 @@ class HomePage {
 
     // Methods
     async openWebsite() {
-        await this.page.goto('https://www.demoblaze.com');
+        await this.page.goto('/');
     }
 
     async clickLogin() {
@@ -26,6 +24,8 @@ class HomePage {
 
     async clickCart() {
         await this.cartLink.click();
+
+        await this.page.waitForURL('**/cart.html');
     }
 }
 

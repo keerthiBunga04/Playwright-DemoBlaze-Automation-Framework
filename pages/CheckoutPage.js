@@ -54,6 +54,11 @@ class CheckoutPage {
 
     // Get Purchase Confirmation
     async getPurchaseConfirmation() {
+
+        await this.purchaseConfirmation.waitFor({
+            state: 'visible'
+        });
+
         return await this.purchaseConfirmation.textContent();
     }
 }

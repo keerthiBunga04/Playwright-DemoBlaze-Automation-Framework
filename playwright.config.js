@@ -28,8 +28,9 @@ export default defineConfig({
 
   // Shared settings for all browser projects
   use: {
-
-    // Collect trace when retrying a failed test
+    // Base URL for the application
+    baseURL: 'https://www.demoblaze.com',
+    // Collect trace when retrying failed tests
     trace: 'on-first-retry',
   },
 
