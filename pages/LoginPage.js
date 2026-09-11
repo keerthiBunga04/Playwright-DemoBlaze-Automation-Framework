@@ -5,10 +5,17 @@ class LoginPage {
     constructor(page) {
         this.page = page;
 
-        // Locators
+        // Login Form Locators
         this.usernameTextBox = page.locator('#loginusername');
         this.passwordTextBox = page.locator('#loginpassword');
-        this.loginButton = page.getByRole('button', { name: 'Log in' });
+        this.loginButton = page.getByRole('button', {
+            name: 'Log in'
+        });
+
+        // Login Modal
+        this.loginModal = page.locator('#logInModal');
+
+        // Successful Login
         this.welcomeMessage = page.locator('#nameofuser');
     }
 
@@ -22,12 +29,16 @@ class LoginPage {
         await this.passwordTextBox.fill(password);
     }
 
-    // Click login button
+    // Click Login button and wait for modal to close
     async clickLoginButton() {
         await this.loginButton.click();
+
+        await this.loginModal.waitFor({
+            state: 'hidden'
+        });
     }
 
-    // Login
+    // Complete login flow
     async login(username, password) {
         await this.enterUsername(username);
         await this.enterPassword(password);
@@ -39,12 +50,14 @@ class LoginPage {
         return await this.welcomeMessage.textContent();
     }
 
-    // Check if user is logged in
+    // Verify user is logged in
     async isUserLoggedIn() {
-        await this.welcomeMessage.waitFor({ state: 'visible' });
+        await this.welcomeMessage.waitFor({
+            state: 'visible'
+        });
+
         return true;
     }
-
 }
 
 module.exports = LoginPage;

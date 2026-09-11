@@ -23,9 +23,10 @@ class HomePage {
     }
 
     async clickCart() {
-        await this.cartLink.click();
-
-        await this.page.waitForURL('**/cart.html');
+        await Promise.all([
+            this.page.waitForURL('**/cart.html'),
+            this.cartLink.click()
+        ]);
     }
 }
 
