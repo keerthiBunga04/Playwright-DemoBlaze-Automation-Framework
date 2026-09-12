@@ -12,7 +12,7 @@ const messages = require('../fixtures/messages.json');
 
 // Positive Test
 test(
-    'Verify user can sign up successfully',
+    'Verify user can sign up successfully @smoke @regression',
     async ({
         page,
         homePage,
@@ -56,7 +56,7 @@ test(
 
 // Negative Test - Duplicate Username
 test(
-    'Verify signup fails with duplicate username',
+    'Verify signup fails with duplicate username @negative @regression',
     async ({
         page,
         homePage,
@@ -84,9 +84,9 @@ test(
 );
 
 
-// Negative Test - Empty Username and Password
+// Negative Test - Empty Credentials
 test(
-    'Verify signup fails when username and password are empty',
+    'Verify signup fails when username and password are empty @negative @regression',
     async ({
         page,
         homePage,

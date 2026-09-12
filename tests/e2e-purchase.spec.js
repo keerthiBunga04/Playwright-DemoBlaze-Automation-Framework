@@ -2,10 +2,12 @@ const { test, expect } = require('../fixtures/test-fixtures');
 
 const products = require('../fixtures/products.json');
 const checkoutData = require('../fixtures/checkout.json');
+
 const { acceptDialog } = require('../utils/Helper');
 
+
 test(
-    'Verify complete end-to-end purchase flow',
+    'Verify complete end-to-end purchase flow @e2e @smoke @regression',
     async ({
         page,
         homePage,
@@ -38,7 +40,8 @@ test(
 
         await productPage.clickAddToCart();
 
-        const dialogMessage = await dialogPromise;
+        const dialogMessage =
+            await dialogPromise;
 
         expect(dialogMessage).toContain(
             'Product added'

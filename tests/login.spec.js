@@ -3,8 +3,10 @@ const { test, expect } = require('../fixtures/test-fixtures');
 const users = require('../fixtures/users.json');
 const messages = require('../fixtures/messages.json');
 
+
+// Positive Test
 test(
-    'Verify user can login',
+    'Verify user can login @smoke @regression',
     async ({
         page,
         homePage,
@@ -31,8 +33,10 @@ test(
     }
 );
 
+
+// Negative Test - Invalid Credentials
 test(
-    'Verify login fails with invalid credentials',
+    'Verify login fails with invalid credentials @negative @regression',
     async ({
         page,
         homePage,
@@ -59,8 +63,10 @@ test(
     }
 );
 
+
+// Negative Test - Empty Credentials
 test(
-    'Verify login fails when username and password are empty',
+    'Verify login fails when username and password are empty @negative @regression',
     async ({
         page,
         homePage,

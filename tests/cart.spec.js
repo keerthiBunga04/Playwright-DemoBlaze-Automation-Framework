@@ -1,17 +1,17 @@
 const { test, expect } = require('../fixtures/test-fixtures');
 
 const products = require('../fixtures/products.json');
-const checkoutData = require('../fixtures/checkout.json');
+
 const { acceptDialog } = require('../utils/Helper');
 
+
 test(
-    'Verify user can complete checkout successfully',
+    'Verify product is added to cart successfully @smoke @regression',
     async ({
         page,
         homePage,
         productPage,
-        cartPage,
-        checkoutPage
+        cartPage
     }) => {
 
         await homePage.openWebsite();
@@ -24,7 +24,8 @@ test(
 
         await productPage.clickAddToCart();
 
-        const dialogMessage = await dialogPromise;
+        const dialogMessage =
+            await dialogPromise;
 
         expect(dialogMessage).toContain(
             'Product added'
@@ -38,27 +39,5 @@ test(
             );
 
         expect(productInCart).toBeTruthy();
-
-        await cartPage.clickPlaceOrder();
-
-        await checkoutPage.verifyCheckoutModalVisible();
-
-        await checkoutPage.enterCustomerDetails(
-            checkoutData.customer.name,
-            checkoutData.customer.country,
-            checkoutData.customer.city,
-            checkoutData.customer.card,
-            checkoutData.customer.month,
-            checkoutData.customer.year
-        );
-
-        await checkoutPage.clickPurchase();
-
-        const confirmation =
-            await checkoutPage.getPurchaseConfirmation();
-
-        expect(confirmation).toContain(
-            'Thank you for your purchase!'
-        );
     }
 );
