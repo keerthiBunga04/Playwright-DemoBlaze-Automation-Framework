@@ -1,46 +1,64 @@
-const { test, expect } = require('@playwright/test');
-
-const HomePage = require('../pages/HomePage');
-const ProductPage = require('../pages/ProductPage');
-const CartPage = require('../pages/CartPage');
+const { test, expect } = require('../fixtures/test-fixtures');
 
 const products = require('../fixtures/products.json');
-
+const checkoutData = require('../fixtures/checkout.json');
 const { acceptDialog } = require('../utils/Helper');
 
-test('Verify product can be added to cart', async ({ page }) => {
+test(
+    'Verify user can complete checkout successfully',
+    async ({
+        page,
+        homePage,
+        productPage,
+        cartPage,
+        checkoutPage
+    }) => {
 
-    const homePage = new HomePage(page);
-    const productPage = new ProductPage(page);
-    const cartPage = new CartPage(page);
+        await homePage.openWebsite();
 
-    await homePage.openWebsite();
+        await productPage.selectProduct(
+            products.mobile.name
+        );
 
-    // Select product
-    await productPage.selectProduct(products.mobile.name);
+        const dialogPromise = acceptDialog(page);
 
-    // Handle "Product added" dialog
-    const dialogPromise = acceptDialog(page);
+        await productPage.clickAddToCart();
 
-    await productPage.clickAddToCart();
+        const dialogMessage = await dialogPromise;
 
-    const dialogMessage = await dialogPromise;
+        expect(dialogMessage).toContain(
+            'Product added'
+        );
 
-    expect(dialogMessage).toContain('Product added');
+        await homePage.clickCart();
 
-    // Open Cart
-    await homePage.clickCart();
+        const productInCart =
+            await cartPage.isProductInCart(
+                products.mobile.name
+            );
 
-    // Verify product is in cart
-    const productInCart = await cartPage.isProductInCart(
-        products.mobile.name
-    );
+        expect(productInCart).toBeTruthy();
 
-    expect(productInCart).toBeTruthy();
+        await cartPage.clickPlaceOrder();
 
-    // Verify cart total
-    const totalPrice = await cartPage.getTotalPrice();
+        await checkoutPage.verifyCheckoutModalVisible();
 
-    expect(totalPrice).toBe(products.mobile.price.replace('$', ''));
+        await checkoutPage.enterCustomerDetails(
+            checkoutData.customer.name,
+            checkoutData.customer.country,
+            checkoutData.customer.city,
+            checkoutData.customer.card,
+            checkoutData.customer.month,
+            checkoutData.customer.year
+        );
 
-});
+        await checkoutPage.clickPurchase();
+
+        const confirmation =
+            await checkoutPage.getPurchaseConfirmation();
+
+        expect(confirmation).toContain(
+            'Thank you for your purchase!'
+        );
+    }
+);

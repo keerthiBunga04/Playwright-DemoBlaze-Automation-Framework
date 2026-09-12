@@ -1,85 +1,85 @@
-const { test, expect } = require('@playwright/test');
-
-const HomePage = require('../pages/HomePage');
-const ProductPage = require('../pages/ProductPage');
-const CartPage = require('../pages/CartPage');
-const CheckoutPage = require('../pages/CheckoutPage');
+const { test, expect } = require('../fixtures/test-fixtures');
 
 const products = require('../fixtures/products.json');
 const checkoutData = require('../fixtures/checkout.json');
-
 const { acceptDialog } = require('../utils/Helper');
 
-test('Verify complete end-to-end purchase flow', async ({ page }) => {
+test(
+    'Verify complete end-to-end purchase flow',
+    async ({
+        page,
+        homePage,
+        productPage,
+        cartPage,
+        checkoutPage
+    }) => {
 
-    const homePage = new HomePage(page);
-    const productPage = new ProductPage(page);
-    const cartPage = new CartPage(page);
-    const checkoutPage = new CheckoutPage(page);
+        await homePage.openWebsite();
 
-    // 1. Open DemoBlaze
-    await homePage.openWebsite();
+        await productPage.selectProduct(
+            products.mobile.name
+        );
 
-    // 2. Select product
-    await productPage.selectProduct(products.mobile.name);
+        const productTitle =
+            await productPage.getProductTitle();
 
-    // 3. Verify product details
-    const productTitle = await productPage.getProductTitle();
-    const productPrice = await productPage.getProductPrice();
+        const productPrice =
+            await productPage.getProductPrice();
 
-    expect(productTitle).toContain(products.mobile.name);
-    expect(productPrice).toContain(products.mobile.price);
+        expect(productTitle).toContain(
+            products.mobile.name
+        );
 
-    // 4. Add product to cart
-    const dialogPromise = acceptDialog(page);
+        expect(productPrice).toContain(
+            products.mobile.price
+        );
 
-    await productPage.clickAddToCart();
+        const dialogPromise = acceptDialog(page);
 
-    const dialogMessage = await dialogPromise;
+        await productPage.clickAddToCart();
 
-    expect(dialogMessage).toContain('Product added');
+        const dialogMessage = await dialogPromise;
 
-    // 5. Open Cart
-    await homePage.clickCart();
+        expect(dialogMessage).toContain(
+            'Product added'
+        );
 
-    // 6. Verify product is in Cart
-    const productInCart = await cartPage.isProductInCart(
-        products.mobile.name
-    );
+        await homePage.clickCart();
 
-    expect(productInCart).toBeTruthy();
+        const productInCart =
+            await cartPage.isProductInCart(
+                products.mobile.name
+            );
 
-    // 7. Verify Cart total
-    const totalPrice = await cartPage.getTotalPrice();
+        expect(productInCart).toBeTruthy();
 
-    expect(totalPrice).toBe(
-        products.mobile.price.replace('$', '')
-    );
+        const totalPrice =
+            await cartPage.getTotalPrice();
 
-    // 8. Open Checkout
-    await cartPage.clickPlaceOrder();
+        expect(totalPrice).toBe(
+            products.mobile.price.replace('$', '')
+        );
 
-    // 9. Verify Checkout modal
-    await checkoutPage.verifyCheckoutModalVisible();
+        await cartPage.clickPlaceOrder();
 
-    // 10. Enter customer details
-    await checkoutPage.enterCustomerDetails(
-        checkoutData.customer.name,
-        checkoutData.customer.country,
-        checkoutData.customer.city,
-        checkoutData.customer.card,
-        checkoutData.customer.month,
-        checkoutData.customer.year
-    );
+        await checkoutPage.verifyCheckoutModalVisible();
 
-    // 11. Complete purchase
-    await checkoutPage.clickPurchase();
+        await checkoutPage.enterCustomerDetails(
+            checkoutData.customer.name,
+            checkoutData.customer.country,
+            checkoutData.customer.city,
+            checkoutData.customer.card,
+            checkoutData.customer.month,
+            checkoutData.customer.year
+        );
 
-    // 12. Verify purchase confirmation
-    const confirmation =
-        await checkoutPage.getPurchaseConfirmation();
+        await checkoutPage.clickPurchase();
 
-    expect(confirmation).toContain(
-        'Thank you for your purchase!'
-    );
-});
+        const confirmation =
+            await checkoutPage.getPurchaseConfirmation();
+
+        expect(confirmation).toContain(
+            'Thank you for your purchase!'
+        );
+    }
+);

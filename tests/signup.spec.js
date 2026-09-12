@@ -1,7 +1,4 @@
-const { test, expect } = require('@playwright/test');
-
-const HomePage = require('../pages/HomePage');
-const SignupPage = require('../pages/SignupPage');
+const { test, expect } = require('../fixtures/test-fixtures');
 
 const {
     generateUsername,
@@ -10,40 +7,44 @@ const {
 
 const { acceptDialog } = require('../utils/Helper');
 
-test('Verify user can sign up successfully', async ({ page }) => {
+test(
+    'Verify user can sign up successfully',
+    async ({
+        page,
+        homePage,
+        signupPage
+    }) => {
 
-    // Create Page Objects
-    const homePage = new HomePage(page);
-    const signupPage = new SignupPage(page);
+        await homePage.openWebsite();
 
-    // Open Website
-    await homePage.openWebsite();
+        await homePage.clickSignUp();
 
-    // Click Sign Up
-    await homePage.clickSignUp();
+        await expect(
+            page.locator('#signInModal')
+        ).toBeVisible();
 
-    // Verify Sign Up Modal
-    await expect(page.locator('#signInModal')).toBeVisible();
+        const username = generateUsername();
+        const password = generatePassword();
 
-    // Generate Dynamic Test Data
-    const username = generateUsername();
-    const password = generatePassword();
+        await signupPage.fillSignupForm(
+            username,
+            password
+        );
 
-    // Fill Sign Up Form
-    await signupPage.fillSignupForm(username, password);
+        const dialogMessagePromise = acceptDialog(page);
 
-    // Listen for Dialog
-    const dialogPromise = acceptDialog(page);
+        await signupPage.clickSignUpButton();
 
-    // Click Sign Up Button
-    await signupPage.clickSignUpButton();
+        const dialogMessage =
+            await dialogMessagePromise;
 
-    // Capture Dialog Message
-    const dialogMessage = await dialogPromise;
+        console.log(
+            'Dialog Message:',
+            dialogMessage
+        );
 
-    console.log("Dialog Message:", dialogMessage);
-
-    // Verify Successful Sign Up
-    expect(dialogMessage).toContain("Sign up successful");
-
-});
+        expect(dialogMessage).toContain(
+            'Sign up successful'
+        );
+    }
+);
