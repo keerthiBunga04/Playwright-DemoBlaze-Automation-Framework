@@ -1,5 +1,7 @@
 {
     "loginSuccess": "Welcome",
     "invalidLogin": "Wrong password.",
-    "emptyLogin": "Please fill out Username and Password."
+    "emptyLogin": "Please fill out Username and Password.",
+    "duplicateSignup": "This user already exist.",
+    "emptySignup": "Please fill out Username and Password."
 }

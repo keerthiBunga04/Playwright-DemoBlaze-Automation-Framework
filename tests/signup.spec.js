@@ -7,6 +7,10 @@ const {
 
 const { acceptDialog } = require('../utils/Helper');
 
+const messages = require('../fixtures/messages.json');
+
+
+// Positive Test
 test(
     'Verify user can sign up successfully',
     async ({
@@ -45,6 +49,66 @@ test(
 
         expect(dialogMessage).toContain(
             'Sign up successful'
+        );
+    }
+);
+
+
+// Negative Test - Duplicate Username
+test(
+    'Verify signup fails with duplicate username',
+    async ({
+        page,
+        homePage,
+        signupPage
+    }) => {
+
+        await homePage.openWebsite();
+
+        await homePage.clickSignUp();
+
+        await expect(
+            page.locator('#signInModal')
+        ).toBeVisible();
+
+        const dialogMessage =
+            await signupPage.attemptSignup(
+                'Ketty',
+                'kettykeerthi'
+            );
+
+        expect(dialogMessage).toContain(
+            messages.duplicateSignup
+        );
+    }
+);
+
+
+// Negative Test - Empty Username and Password
+test(
+    'Verify signup fails when username and password are empty',
+    async ({
+        page,
+        homePage,
+        signupPage
+    }) => {
+
+        await homePage.openWebsite();
+
+        await homePage.clickSignUp();
+
+        await expect(
+            page.locator('#signInModal')
+        ).toBeVisible();
+
+        const dialogMessage =
+            await signupPage.attemptSignup(
+                '',
+                ''
+            );
+
+        expect(dialogMessage).toContain(
+            messages.emptySignup
         );
     }
 );
