@@ -1,5 +1,9 @@
 // @ts-check
+import dotenv from 'dotenv';
+
 import { defineConfig, devices } from '@playwright/test';
+
+dotenv.config();
 
 /**
  * Playwright Test Configuration
@@ -28,9 +32,7 @@ export default defineConfig({
 
   // Shared settings for all browser projects
   use: {
-    // Base URL for the application
-    baseURL: 'https://www.demoblaze.com',
-    // Collect trace when retrying failed tests
+    baseURL: process.env.BASE_URL,
     trace: 'on-first-retry',
   },
 
