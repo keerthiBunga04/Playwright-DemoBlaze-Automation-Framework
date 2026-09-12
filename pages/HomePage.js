@@ -24,7 +24,9 @@ class HomePage {
 
     async clickCart() {
         await Promise.all([
-            this.page.waitForURL('**/cart.html'),
+            this.page.waitForURL('**/cart.html', {
+                waitUntil: 'commit'
+            }),
             this.cartLink.click()
         ]);
     }

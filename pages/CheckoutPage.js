@@ -32,20 +32,38 @@ class CheckoutPage {
 
     // Enter Customer Details
     async enterCustomerDetails(
-        name,
-        country,
-        city,
-        card,
-        month,
-        year
-    ) {
-        await this.nameTextBox.fill(name);
-        await this.countryTextBox.fill(country);
-        await this.cityTextBox.fill(city);
-        await this.cardTextBox.fill(card);
-        await this.monthTextBox.fill(month);
-        await this.yearTextBox.fill(year);
-    }
+    name,
+    country,
+    city,
+    card,
+    month,
+    year
+) {
+    await this.nameTextBox.fill(String(name));
+    await this.countryTextBox.fill(String(country));
+    await this.cityTextBox.fill(String(city));
+
+    // Use keyboard input for fields that intermittently lose values
+    await this.cardTextBox.click();
+    await this.cardTextBox.fill('');
+    await this.cardTextBox.pressSequentially(String(card));
+    await this.cardTextBox.press('Tab');
+
+    await this.monthTextBox.fill(String(month));
+
+    await this.yearTextBox.click();
+    await this.yearTextBox.fill('');
+    await this.yearTextBox.pressSequentially(String(year));
+    await this.yearTextBox.press('Tab');
+
+    // Validate entered values
+    await expect(this.nameTextBox).toHaveValue(String(name));
+    await expect(this.countryTextBox).toHaveValue(String(country));
+    await expect(this.cityTextBox).toHaveValue(String(city));
+    await expect(this.cardTextBox).toHaveValue(String(card));
+    await expect(this.monthTextBox).toHaveValue(String(month));
+    await expect(this.yearTextBox).toHaveValue(String(year));
+}
 
     // Click Purchase
     async clickPurchase() {
