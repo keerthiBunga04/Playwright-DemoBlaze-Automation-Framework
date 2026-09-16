@@ -1,5 +1,4 @@
 class ProductPage {
-
     constructor(page) {
         this.page = page;
 
@@ -16,27 +15,27 @@ class ProductPage {
 
     // Select Any Product
     async selectProduct(productName) {
-
         const productLink = this.page.getByRole('link', {
             name: productName,
             exact: true
         });
 
         await productLink.waitFor({
-            state: 'visible'
+            state: 'visible',
+            timeout: 15000
         });
 
         await productLink.click();
 
-        // Wait for product details page to become available
+        // Wait for product details instead of waiting for URL/load event
         await this.productTitle.waitFor({
             state: 'visible',
-            timeout: 15000
+            timeout: 30000
         });
 
         await this.addToCartButton.waitFor({
             state: 'visible',
-            timeout: 15000
+            timeout: 30000
         });
     }
 

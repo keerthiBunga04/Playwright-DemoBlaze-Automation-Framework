@@ -20,12 +20,10 @@ test(
             products.mobile.name
         );
 
-        const dialogPromise = acceptDialog(page);
-
-        await productPage.clickAddToCart();
-
-        const dialogMessage =
-            await dialogPromise;
+        const [dialogMessage] = await Promise.all([
+            acceptDialog(page),
+            productPage.clickAddToCart()
+        ]);
 
         expect(dialogMessage).toContain(
             'Product added'

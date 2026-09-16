@@ -31,14 +31,11 @@ test(
             products.mobile.price
         );
 
-        const dialogPromise = acceptDialog(page);
+        const [dialogMessage] = await Promise.all([
+            acceptDialog(page),
+            productPage.clickAddToCart()
+        ]);
 
-        await productPage.clickAddToCart();
-
-        const dialogMessage =
-            await dialogPromise;
-
-        expect(dialogMessage)
-            .toContain('Product added');
+        expect(dialogMessage).toContain('Product added');
     }
 );

@@ -5,7 +5,6 @@ class LoginPage {
         this.page = page;
 
         this.loginModal = page.locator('#logInModal');
-
         this.usernameTextBox = page.locator('#loginusername');
         this.passwordTextBox = page.locator('#loginpassword');
 
@@ -18,67 +17,69 @@ class LoginPage {
     }
 
     async enterUsername(username) {
-        await this.usernameTextBox.fill(username);
+        await expect(this.usernameTextBox).toBeVisible();
+
+        await this.usernameTextBox.click();
+        await this.usernameTextBox.fill('');
+        await this.usernameTextBox.pressSequentially(String(username));
+
+        await expect(this.usernameTextBox).toHaveValue(String(username));
     }
 
     async enterPassword(password) {
-        await this.passwordTextBox.fill(password);
-    }
+        await expect(this.passwordTextBox).toBeVisible();
 
-    async clickLoginButton() {
-        await this.loginButton.click();
+        await this.passwordTextBox.click();
+        await this.passwordTextBox.fill('');
+        await this.passwordTextBox.pressSequentially(String(password));
 
-        await this.loginModal.waitFor({
-            state: 'hidden'
-        });
+        await expect(this.passwordTextBox).toHaveValue(String(password));
     }
 
     async login(username, password) {
+        await expect(this.loginModal).toBeVisible();
+
         await this.enterUsername(username);
         await this.enterPassword(password);
-        await this.clickLoginButton();
+
+        await this.loginButton.click();
+
+        // Wait until successful login is reflected in the navigation bar
+        await expect(this.welcomeMessage).toBeVisible({
+            timeout: 15000
+        });
     }
 
     async attemptLogin(username, password) {
+        await expect(this.loginModal).toBeVisible();
+
         await this.enterUsername(username);
         await this.enterPassword(password);
 
-        await expect(this.loginModal).toBeVisible();
-
-        const dialogMessagePromise = new Promise(resolve => {
+        const dialogPromise = new Promise(resolve => {
             this.page.once('dialog', async dialog => {
                 const message = dialog.message();
-
                 await dialog.accept();
-
                 resolve(message);
             });
         });
 
-        await this.page.evaluate(() => {
-            const button = document.querySelector(
-                '#logInModal button[onclick="logIn()"]'
-            );
+        await this.loginButton.click();
 
-            if (!button) {
-                throw new Error(
-                    'Login button was not found in the login modal'
-                );
-            }
-
-            button.click();
-        });
-
-        return await dialogMessagePromise;
+        return await dialogPromise;
     }
 
     async getWelcomeMessage() {
+        await expect(this.welcomeMessage).toBeVisible({
+            timeout: 15000
+        });
+
         return await this.welcomeMessage.textContent();
     }
 
     async isUserLoggedIn() {
-        await this.welcomeMessage.waitFor({
-            state: 'visible'
+        await expect(this.welcomeMessage).toBeVisible({
+            timeout: 15000
         });
 
         return true;

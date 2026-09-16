@@ -1,3 +1,5 @@
+const { expect } = require('@playwright/test');
+
 class SignupPage {
     constructor(page) {
         this.page = page;
@@ -14,51 +16,62 @@ class SignupPage {
     }
 
     async enterUsername(username) {
-        await this.usernameTextBox.fill(username);
+        const value = String(username);
+
+        await expect(this.usernameTextBox).toBeVisible();
+
+        await this.usernameTextBox.click();
+        await this.usernameTextBox.fill('');
+        await this.usernameTextBox.pressSequentially(value);
+
+        await expect(this.usernameTextBox).toHaveValue(value);
     }
 
     async enterPassword(password) {
-        await this.passwordTextBox.fill(password);
+        const value = String(password);
+
+        await expect(this.passwordTextBox).toBeVisible();
+
+        await this.passwordTextBox.click();
+        await this.passwordTextBox.fill('');
+        await this.passwordTextBox.pressSequentially(value);
+
+        await expect(this.passwordTextBox).toHaveValue(value);
     }
 
     async fillSignupForm(username, password) {
+        await expect(this.signupModal).toBeVisible();
+
         await this.enterUsername(username);
         await this.enterPassword(password);
+
+        // Final verification before signup
+        await expect(this.usernameTextBox).toHaveValue(String(username));
+        await expect(this.passwordTextBox).toHaveValue(String(password));
     }
 
     async clickSignUpButton() {
+        await expect(this.signUpButton).toBeVisible();
         await this.signUpButton.click();
     }
 
     async attemptSignup(username, password) {
+        await expect(this.signupModal).toBeVisible();
+
         await this.enterUsername(username);
         await this.enterPassword(password);
 
-        const dialogMessagePromise = new Promise(resolve => {
+        const dialogPromise = new Promise(resolve => {
             this.page.once('dialog', async dialog => {
                 const message = dialog.message();
-
                 await dialog.accept();
-
                 resolve(message);
             });
         });
 
-        await this.page.evaluate(() => {
-            const button = document.querySelector(
-                '#signInModal button[onclick="register()"]'
-            );
+        await this.signUpButton.click();
 
-            if (!button) {
-                throw new Error(
-                    'Signup button was not found in the signup modal'
-                );
-            }
-
-            button.click();
-        });
-
-        return await dialogMessagePromise;
+        return await dialogPromise;
     }
 }
 
