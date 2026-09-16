@@ -1,14 +1,11 @@
 const { expect } = require('@playwright/test');
 
 class CheckoutPage {
-
     constructor(page) {
         this.page = page;
 
-        // Checkout Modal
         this.checkoutModal = page.locator('#orderModal');
 
-        // Customer Details
         this.nameTextBox = page.locator('#name');
         this.countryTextBox = page.locator('#country');
         this.cityTextBox = page.locator('#city');
@@ -16,63 +13,66 @@ class CheckoutPage {
         this.monthTextBox = page.locator('#month');
         this.yearTextBox = page.locator('#year');
 
-        // Purchase
         this.purchaseButton = page.getByRole('button', {
             name: 'Purchase'
         });
 
-        // Purchase Confirmation
         this.purchaseConfirmation = page.locator('.sweet-alert h2');
     }
 
-    // Verify Checkout Modal
     async verifyCheckoutModalVisible() {
         await expect(this.checkoutModal).toBeVisible();
     }
 
-    // Enter Customer Details
-    async enterCustomerDetails(
-    name,
-    country,
-    city,
-    card,
-    month,
-    year
-) {
-    await this.nameTextBox.fill(String(name));
-    await this.countryTextBox.fill(String(country));
-    await this.cityTextBox.fill(String(city));
+    async enterCustomerDetails(name, country, city, card, month, year) {
+        await expect(this.checkoutModal).toBeVisible();
 
-    // Use keyboard input for fields that intermittently lose values
-    await this.cardTextBox.click();
-    await this.cardTextBox.fill('');
-    await this.cardTextBox.pressSequentially(String(card));
-    await this.cardTextBox.press('Tab');
+        // Name
+        await this.nameTextBox.click();
+        await this.nameTextBox.fill('');
+        await this.nameTextBox.pressSequentially(String(name));
+        await expect(this.nameTextBox).toHaveValue(String(name));
 
-    await this.monthTextBox.fill(String(month));
+        // Country
+        await this.countryTextBox.click();
+        await this.countryTextBox.fill('');
+        await this.countryTextBox.pressSequentially(String(country));
+        await this.countryTextBox.press('Tab');
+        await expect(this.countryTextBox).toHaveValue(String(country));
 
-    await this.yearTextBox.click();
-    await this.yearTextBox.fill('');
-    await this.yearTextBox.pressSequentially(String(year));
-    await this.yearTextBox.press('Tab');
+        // City
+        await this.cityTextBox.click();
+        await this.cityTextBox.fill('');
+        await this.cityTextBox.pressSequentially(String(city));
+        await expect(this.cityTextBox).toHaveValue(String(city));
 
-    // Validate entered values
-    await expect(this.nameTextBox).toHaveValue(String(name));
-    await expect(this.countryTextBox).toHaveValue(String(country));
-    await expect(this.cityTextBox).toHaveValue(String(city));
-    await expect(this.cardTextBox).toHaveValue(String(card));
-    await expect(this.monthTextBox).toHaveValue(String(month));
-    await expect(this.yearTextBox).toHaveValue(String(year));
-}
+        // Card
+        await this.cardTextBox.click();
+        await this.cardTextBox.fill('');
+        await this.cardTextBox.pressSequentially(String(card));
+        await this.cardTextBox.press('Tab');
+        await expect(this.cardTextBox).toHaveValue(String(card));
 
-    // Click Purchase
+        // Month
+        await this.monthTextBox.click();
+        await this.monthTextBox.fill('');
+        await this.monthTextBox.pressSequentially(String(month));
+        await expect(this.monthTextBox).toHaveValue(String(month));
+
+        // Year
+        await this.yearTextBox.click();
+        await this.yearTextBox.fill('');
+        await this.yearTextBox.pressSequentially(String(year));
+        await this.yearTextBox.press('Tab');
+        await expect(this.yearTextBox).toHaveValue(String(year));
+    }
+
     async clickPurchase() {
+        await expect(this.purchaseButton).toBeVisible();
         await this.purchaseButton.click();
     }
 
-    // Get Purchase Confirmation
     async getPurchaseConfirmation() {
-
         await this.purchaseConfirmation.waitFor({
             state: 'visible'
         });
