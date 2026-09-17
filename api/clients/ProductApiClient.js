@@ -9,6 +9,15 @@ class ProductApiClient {
             `${this.baseURL}/entries`
         );
     }
+    async getProductById(productId) {
+        const response = await this.getAllProducts();
+
+        const responseBody = await response.json();
+
+        return responseBody.Items.find(
+            product => product.id === productId
+        );
+    }
 }
 
 module.exports = ProductApiClient;

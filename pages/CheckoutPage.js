@@ -28,42 +28,27 @@ class CheckoutPage {
         await expect(this.checkoutModal).toBeVisible();
 
         // Name
-        await this.nameTextBox.click();
-        await this.nameTextBox.fill('');
-        await this.nameTextBox.pressSequentially(String(name));
+        await this.nameTextBox.fill(String(name));
         await expect(this.nameTextBox).toHaveValue(String(name));
 
         // Country
-        await this.countryTextBox.click();
-        await this.countryTextBox.fill('');
-        await this.countryTextBox.pressSequentially(String(country));
-        await this.countryTextBox.press('Tab');
+        await this.countryTextBox.fill(String(country));
         await expect(this.countryTextBox).toHaveValue(String(country));
 
         // City
-        await this.cityTextBox.click();
-        await this.cityTextBox.fill('');
-        await this.cityTextBox.pressSequentially(String(city));
+        await this.cityTextBox.fill(String(city));
         await expect(this.cityTextBox).toHaveValue(String(city));
 
         // Card
-        await this.cardTextBox.click();
-        await this.cardTextBox.fill('');
-        await this.cardTextBox.pressSequentially(String(card));
-        await this.cardTextBox.press('Tab');
+        await this.cardTextBox.fill(String(card));
         await expect(this.cardTextBox).toHaveValue(String(card));
 
         // Month
-        await this.monthTextBox.click();
-        await this.monthTextBox.fill('');
-        await this.monthTextBox.pressSequentially(String(month));
+        await this.monthTextBox.fill(String(month));
         await expect(this.monthTextBox).toHaveValue(String(month));
 
         // Year
-        await this.yearTextBox.click();
-        await this.yearTextBox.fill('');
-        await this.yearTextBox.pressSequentially(String(year));
-        await this.yearTextBox.press('Tab');
+        await this.yearTextBox.fill(String(year));
         await expect(this.yearTextBox).toHaveValue(String(year));
     }
 
