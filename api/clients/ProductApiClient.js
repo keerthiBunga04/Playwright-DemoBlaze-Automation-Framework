@@ -1,7 +1,7 @@
 class ProductApiClient {
     constructor(request) {
         this.request = request;
-        this.baseURL = 'https://api.demoblaze.com';
+        this.baseURL = process.env.API_BASE_URL;
     }
 
     async getAllProducts() {
@@ -9,6 +9,7 @@ class ProductApiClient {
             `${this.baseURL}/entries`
         );
     }
+
     async getProductById(productId) {
         const response = await this.getAllProducts();
 
