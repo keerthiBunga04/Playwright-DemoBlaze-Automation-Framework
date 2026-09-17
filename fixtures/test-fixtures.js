@@ -6,6 +6,7 @@ const SignupPage = require('../pages/SignupPage');
 const ProductPage = require('../pages/ProductPage');
 const CartPage = require('../pages/CartPage');
 const CheckoutPage = require('../pages/CheckoutPage');
+const messagesData = require('./messages.json');
 const usersData = require('./users.json');
 const productsData = require('./products.json');
 
@@ -40,7 +41,8 @@ const test = base.test.extend({
         await use({
             checkout: checkoutData,
             users: usersData,
-            products: productsData
+            products: productsData,
+            messages: messagesData
         });
     },
 

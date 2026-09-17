@@ -7,8 +7,6 @@ const {
 
 const { acceptDialog } = require('../utils/Helper');
 
-const messages = require('../fixtures/messages.json');
-
 
 // Positive Test
 test(
@@ -81,7 +79,7 @@ test(
             );
 
         expect(dialogMessage).toContain(
-            messages.duplicateSignup
+            testData.messages.duplicateSignup
         );
     }
 );
@@ -114,7 +112,7 @@ test(
             );
 
         expect(dialogMessage).toContain(
-            messages.emptySignup
+            testData.messages.emptySignup
         );
     }
 );

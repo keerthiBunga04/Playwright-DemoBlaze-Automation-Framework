@@ -1,8 +1,8 @@
 # Playwright DemoBlaze Automation Framework
 
-A JavaScript-based UI automation framework built using Playwright Test and the Page Object Model (POM) design pattern.
+A scalable end-to-end test automation framework built using Playwright, JavaScript, and the Page Object Model design pattern.
 
-This project automates key user journeys on the DemoBlaze e-commerce application, including login, signup, product validation, cart operations, checkout, and complete end-to-end purchase flow.
+The framework automates UI workflows and API validations for the DemoBlaze application across Chromium, Firefox, and WebKit browsers.
 
 ---
 
@@ -10,40 +10,37 @@ This project automates key user journeys on the DemoBlaze e-commerce application
 
 - JavaScript
 - Playwright
-- Playwright Test
 - Node.js
 - Page Object Model (POM)
-- Custom Playwright Fixtures
-- JSON Test Data
-- dotenv
-- Git
-- GitHub
+- Playwright Fixtures
+- API Testing
+- Git & GitHub
 - GitHub Actions
+- HTML Test Reports
 
 ---
 
 ## Application Under Test
 
-DemoBlaze E-commerce Application:
-
+DemoBlaze  
 https://www.demoblaze.com
 
 ---
 
 ## Framework Features
 
+- Cross-browser testing
 - Page Object Model architecture
-- Reusable page classes
 - Custom Playwright fixtures
+- Reusable utility functions
 - Centralized test data management
-- Reusable helper utilities
-- Environment-based configuration
 - Positive and negative test scenarios
-- Smoke, regression, negative, and E2E test tagging
-- Cross-browser execution
-- GitHub Actions CI pipeline
+- End-to-end purchase flow validation
+- UI and API automation
+- Screenshot, video, and trace capture on failure
 - HTML test reporting
-- Playwright report artifact upload
+- GitHub Actions CI integration
+- Environment configuration using `.env`
 
 ---
 
@@ -55,6 +52,10 @@ Playwright-DemoBlaze-Automation-Framework/
 ├── .github/
 │   └── workflows/
 │       └── playwright.yml
+│
+├── api/
+│   └── clients/
+│       └── ProductApiClient.js
 │
 ├── fixtures/
 │   ├── checkout.json
@@ -72,6 +73,8 @@ Playwright-DemoBlaze-Automation-Framework/
 │   └── SignupPage.js
 │
 ├── tests/
+│   ├── api/
+│   │   └── products-api.spec.js
 │   ├── cart.spec.js
 │   ├── checkout.spec.js
 │   ├── e2e-purchase.spec.js
@@ -80,6 +83,7 @@ Playwright-DemoBlaze-Automation-Framework/
 │   └── signup.spec.js
 │
 ├── utils/
+│   ├── ApiAssertions.js
 │   ├── Constants.js
 │   ├── Helper.js
 │   └── RandomData.js
@@ -87,6 +91,5 @@ Playwright-DemoBlaze-Automation-Framework/
 ├── .env
 ├── .gitignore
 ├── package.json
-├── package-lock.json
 ├── playwright.config.js
 └── README.md

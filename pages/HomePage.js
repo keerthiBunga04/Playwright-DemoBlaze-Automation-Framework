@@ -1,17 +1,31 @@
-class HomePage {
+const { expect } = require('@playwright/test');
 
+class HomePage {
     constructor(page) {
         this.page = page;
 
-        // Locators
-        this.loginLink = page.getByRole('link', { name: 'Log in' });
-        this.signUpLink = page.getByRole('link', { name: 'Sign up' });
+        this.loginLink = page.getByRole('link', {
+            name: 'Log in'
+        });
+
+        this.signUpLink = page.getByRole('link', {
+            name: 'Sign up'
+        });
+
         this.cartLink = page.locator('#cartur');
+
+        this.navigationBar = page.locator('nav');
     }
 
-    // Methods
     async openWebsite() {
-        await this.page.goto('/');
+        await this.page.goto('/', {
+            waitUntil: 'domcontentloaded',
+            timeout: 30000
+        });
+
+        await expect(this.navigationBar).toBeVisible({
+            timeout: 15000
+        });
     }
 
     async clickLogin() {
