@@ -20,7 +20,7 @@ class ApiAssertions {
     }
 
     static expectObject(value) {
-        expect(value).toBeTypeOf('object');
+        expect(typeof value).toBe('object');
         expect(value).not.toBeNull();
     }
 
