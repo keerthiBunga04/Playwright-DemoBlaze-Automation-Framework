@@ -60,8 +60,11 @@ test(
     async ({
         page,
         homePage,
-        signupPage
+        signupPage,
+        testData
     }) => {
+
+        const user = testData.users.validUser;
 
         await homePage.openWebsite();
 
@@ -73,8 +76,8 @@ test(
 
         const dialogMessage =
             await signupPage.attemptSignup(
-                'Ketty',
-                'kettykeerthi'
+                user.username,
+                user.password
             );
 
         expect(dialogMessage).toContain(
@@ -90,8 +93,11 @@ test(
     async ({
         page,
         homePage,
-        signupPage
+        signupPage,
+        testData
     }) => {
+
+        const user = testData.users.emptyUser;
 
         await homePage.openWebsite();
 
@@ -103,8 +109,8 @@ test(
 
         const dialogMessage =
             await signupPage.attemptSignup(
-                '',
-                ''
+                user.username,
+                user.password
             );
 
         expect(dialogMessage).toContain(

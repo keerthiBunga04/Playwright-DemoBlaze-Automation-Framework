@@ -1,94 +1,76 @@
 const { test, expect } = require('../fixtures/test-fixtures');
+const { acceptDialog } = require('../utils/Helper');
 
-const users = require('../fixtures/users.json');
-const messages = require('../fixtures/messages.json');
+test.describe('Login Functionality', () => {
 
+    test(
+        'Verify user can login @smoke @regression',
+        async ({ page, homePage, loginPage, testData }) => {
+            const user = testData.users.validUser;
 
-// Positive Test
-test(
-    'Verify user can login @smoke @regression',
-    async ({
-        page,
-        homePage,
-        loginPage
-    }) => {
+            // Open website
+            await homePage.openWebsite();
 
-        await homePage.openWebsite();
+            // Open login modal
+            await homePage.clickLogin();
 
-        await homePage.clickLogin();
-
-        await expect(
-            page.locator('#logInModal')
-        ).toBeVisible();
-
-        await loginPage.login(
-            users.validUser.username,
-            users.validUser.password
-        );
-
-        const isLoggedIn =
-            await loginPage.isUserLoggedIn();
-
-        expect(isLoggedIn).toBeTruthy();
-    }
-);
-
-
-// Negative Test - Invalid Credentials
-test(
-    'Verify login fails with invalid credentials @negative @regression',
-    async ({
-        page,
-        homePage,
-        loginPage
-    }) => {
-
-        await homePage.openWebsite();
-
-        await homePage.clickLogin();
-
-        await expect(
-            page.locator('#logInModal')
-        ).toBeVisible();
-
-        const dialogMessage =
-            await loginPage.attemptLogin(
-                users.invalidUser.username,
-                users.invalidUser.password
+            // Login with valid credentials
+            await loginPage.login(
+                user.username,
+                user.password
             );
 
-        expect(dialogMessage).toContain(
-            messages.invalidLogin
-        );
-    }
-);
+            // Verify successful login
+            const welcomeMessage = await loginPage.getWelcomeMessage();
+
+            expect(welcomeMessage).toContain(user.username);
+        }
+    );
 
 
-// Negative Test - Empty Credentials
-test(
-    'Verify login fails when username and password are empty @negative @regression',
-    async ({
-        page,
-        homePage,
-        loginPage
-    }) => {
+    test(
+        'Verify login fails with invalid credentials @negative @regression',
+        async ({ page, homePage, loginPage, testData }) => {
+            const user = testData.users.invalidUser;
 
-        await homePage.openWebsite();
+            // Open website
+            await homePage.openWebsite();
 
-        await homePage.clickLogin();
+            // Open login modal
+            await homePage.clickLogin();
 
-        await expect(
-            page.locator('#logInModal')
-        ).toBeVisible();
-
-        const dialogMessage =
-            await loginPage.attemptLogin(
-                users.emptyUser.username,
-                users.emptyUser.password
+            // Attempt login with invalid credentials
+            const dialogMessage = await loginPage.attemptLogin(
+                user.username,
+                user.password
             );
 
-        expect(dialogMessage).toContain(
-            messages.emptyLogin
-        );
-    }
-);
+            // Verify error dialog
+            expect(dialogMessage).toContain('Wrong password');
+        }
+    );
+
+
+    test(
+        'Verify login fails when username and password are empty @negative @regression',
+        async ({ page, homePage, loginPage, testData }) => {
+            const user = testData.users.emptyUser;
+
+            // Open website
+            await homePage.openWebsite();
+
+            // Open login modal
+            await homePage.clickLogin();
+
+            // Attempt login with empty credentials
+            const dialogMessage = await loginPage.attemptLogin(
+                user.username,
+                user.password
+            );
+
+            // Verify error dialog
+            expect(dialogMessage).toContain('Please fill out Username and Password.');
+        }
+    );
+
+});
