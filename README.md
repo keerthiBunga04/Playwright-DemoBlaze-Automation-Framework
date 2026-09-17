@@ -344,3 +344,17 @@ Aspiring QA Automation Engineer / SDET
 ## Repository
 
 [GitHub Repository](https://github.com/keerthiBunga04/Playwright-DemoBlaze-Automation-Framework)
+
+## Test Execution Summary
+
+| Category | Status |
+|---|---|
+| UI Automation | Passed |
+| API Automation | Passed |
+| Chromium | Passed |
+| Firefox | Passed |
+| WebKit | Passed |
+| Smoke Tests | Passed |
+| Regression Tests | Passed |
+| Negative Tests | Passed |
+| GitHub Actions CI | Passed |
