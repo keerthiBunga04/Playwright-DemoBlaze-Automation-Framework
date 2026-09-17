@@ -12,5 +12,10 @@
     "monitor": {
         "name": "Apple monitor 24",
         "price": "$400"
+    },
+
+    "api": {
+        "validProductId": 1,
+        "invalidProductId": 99999
     }
 }
