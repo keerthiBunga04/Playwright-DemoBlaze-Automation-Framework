@@ -2,18 +2,19 @@ class ProductPage {
     constructor(page) {
         this.page = page;
 
-        // Product Details
+        // Product details
         this.productTitle = page.locator('h2.name');
+
         this.productPrice = page.locator('.price-container');
 
-        // Add To Cart
+        // Add to cart
         this.addToCartButton = page.getByRole('link', {
             name: 'Add to cart',
             exact: true
         });
     }
 
-    // Select Any Product
+    // Select any product from the homepage
     async selectProduct(productName) {
         const productLink = this.page.getByRole('link', {
             name: productName,
@@ -25,31 +26,38 @@ class ProductPage {
             timeout: 15000
         });
 
-        await productLink.click();
+        // Click product and wait for product-page navigation
+        await Promise.all([
+            this.page.waitForURL(/prod\.html\?idp_=\d+/, {
+                waitUntil: 'commit',
+                timeout: 30000
+            }),
+            productLink.click()
+        ]);
 
-        // Wait for product details instead of waiting for URL/load event
+        // Verify product details page is loaded
         await this.productTitle.waitFor({
             state: 'visible',
-            timeout: 30000
+            timeout: 15000
         });
 
         await this.addToCartButton.waitFor({
             state: 'visible',
-            timeout: 30000
+            timeout: 15000
         });
     }
 
-    // Get Product Title
+    // Get product title
     async getProductTitle() {
         return await this.productTitle.textContent();
     }
 
-    // Get Product Price
+    // Get product price
     async getProductPrice() {
         return await this.productPrice.textContent();
     }
 
-    // Add Product To Cart
+    // Click Add to Cart
     async clickAddToCart() {
         await this.addToCartButton.click();
     }
