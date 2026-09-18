@@ -44,6 +44,60 @@ The framework automates UI workflows and API validations for the DemoBlaze appli
 - Test tagging for smoke, regression, negative, and E2E tests
 
 ---
+## How to Run Tests
+
+Install project dependencies:
+
+```bash
+npm install
+
+---
+## Test Coverage
+
+The framework includes the following automated scenarios:
+
+### UI Tests
+
+- User login with valid credentials
+- Login with invalid credentials
+- Login with empty credentials
+- User signup with dynamically generated credentials
+- Signup with duplicate username
+- Signup with empty credentials
+- Product details validation
+- Add product to cart
+- Cart product validation
+- Cart total validation
+- Checkout form validation
+- Successful purchase confirmation
+
+### API Tests
+
+- Validate successful product collection response
+- Validate product response structure
+- Validate product data types
+- Retrieve product by valid product ID
+- Validate behavior for invalid product ID
+
+### End-to-End Tests
+
+- Complete product purchase workflow:
+  - Open application
+  - Select product
+  - Add product to cart
+  - Verify cart contents
+  - Validate total price
+  - Complete checkout
+  - Verify purchase confirmation
+
+### Browser Coverage
+
+Tests are executed against:
+
+- Chromium
+- Firefox
+- WebKit
+---
 
 ## Project Structure
 
