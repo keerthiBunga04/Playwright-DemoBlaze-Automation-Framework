@@ -1,6 +1,7 @@
 # Playwright DemoBlaze Automation Framework
 
 [![Playwright Tests](https://github.com/keerthiBunga04/Playwright-DemoBlaze-Automation-Framework/actions/workflows/playwright.yml/badge.svg)](https://github.com/keerthiBunga04/Playwright-DemoBlaze-Automation-Framework/actions/workflows/playwright.yml)
+
 A scalable end-to-end test automation framework built using Playwright, JavaScript, and the Page Object Model design pattern.
 
 The framework automates UI workflows and API validations for the DemoBlaze application across Chromium, Firefox, and WebKit browsers.
@@ -44,66 +45,12 @@ The framework automates UI workflows and API validations for the DemoBlaze appli
 - Test tagging for smoke, regression, negative, and E2E tests
 
 ---
-## How to Run Tests
-
-Install project dependencies:
-
-```bash
-npm install
-
----
-## Test Coverage
-
-The framework includes the following automated scenarios:
-
-### UI Tests
-
-- User login with valid credentials
-- Login with invalid credentials
-- Login with empty credentials
-- User signup with dynamically generated credentials
-- Signup with duplicate username
-- Signup with empty credentials
-- Product details validation
-- Add product to cart
-- Cart product validation
-- Cart total validation
-- Checkout form validation
-- Successful purchase confirmation
-
-### API Tests
-
-- Validate successful product collection response
-- Validate product response structure
-- Validate product data types
-- Retrieve product by valid product ID
-- Validate behavior for invalid product ID
-
-### End-to-End Tests
-
-- Complete product purchase workflow:
-  - Open application
-  - Select product
-  - Add product to cart
-  - Verify cart contents
-  - Validate total price
-  - Complete checkout
-  - Verify purchase confirmation
-
-### Browser Coverage
-
-Tests are executed against:
-
-- Chromium
-- Firefox
-- WebKit
----
 
 ## Project Structure
 
 ```text
 Playwright-DemoBlaze-Automation-Framework/
-│
+
 ├── .github/
 │   └── workflows/
 │       └── playwright.yml
@@ -178,7 +125,7 @@ Clone the repository:
 git clone https://github.com/keerthiBunga04/Playwright-DemoBlaze-Automation-Framework.git
 ```
 
-Navigate into the project:
+Navigate into the project directory:
 
 ```bash
 cd Playwright-DemoBlaze-Automation-Framework
@@ -211,7 +158,7 @@ The `.env` file is excluded from Git using `.gitignore`.
 
 ---
 
-## Running Tests
+## How to Run Tests
 
 ### Run all tests
 
@@ -281,8 +228,10 @@ Current API coverage includes:
 
 - Validate successful product collection response
 - Validate product response structure
-- Retrieve a product by ID
+- Validate product data types
+- Retrieve a product by valid product ID
 - Validate behavior for an invalid product ID
+- Validate product categories
 - Reusable API assertion utilities
 - Centralized API test data
 
@@ -299,12 +248,42 @@ Current UI automation covers:
 - Duplicate username validation
 - Empty signup validation
 - Product selection
+- Product details validation
 - Add product to cart
 - Cart product validation
+- Cart total validation
 - Checkout modal validation
 - Customer details submission
 - Successful purchase confirmation
-- Complete end-to-end purchase workflow
+
+---
+
+## End-to-End Test Coverage
+
+The complete purchase workflow validates:
+
+1. Open the DemoBlaze application
+2. Select a product
+3. Validate product title and price
+4. Add the product to the cart
+5. Handle the confirmation dialog
+6. Navigate to the cart
+7. Verify the selected product is present
+8. Validate the cart total
+9. Open the checkout modal
+10. Enter customer details
+11. Complete the purchase
+12. Verify the purchase confirmation message
+
+---
+
+## Browser Coverage
+
+Tests are executed against:
+
+- Chromium
+- Firefox
+- WebKit
 
 ---
 
@@ -318,7 +297,7 @@ To open the report:
 npm run report
 ```
 
-The framework also captures the following artifacts when required:
+The framework also captures the following failure artifacts:
 
 - Screenshots on failure
 - Videos on failure
@@ -330,14 +309,14 @@ The framework also captures the following artifacts when required:
 
 GitHub Actions is configured to automatically execute the Playwright test suite on:
 
-- Push to `main`
-- Pull requests targeting `main`
+- Push to the `main` branch
+- Pull requests targeting the `main` branch
 
 The CI pipeline performs the following steps:
 
 1. Checks out the repository
 2. Sets up Node.js
-3. Installs dependencies
+3. Installs project dependencies
 4. Installs Playwright browsers
 5. Executes the complete test suite
 6. Uploads the Playwright HTML report as an artifact
@@ -348,14 +327,33 @@ The CI pipeline performs the following steps:
 
 The complete test suite has been successfully executed locally and through GitHub Actions.
 
-The framework currently contains:
+The framework includes:
 
 - UI automation tests
 - API automation tests
 - Cross-browser execution
-- Smoke and regression coverage
+- Smoke test coverage
+- Regression test coverage
 - Negative test scenarios
-- CI validation
+- End-to-end test coverage
+- Continuous Integration validation
+
+---
+
+## Test Execution Summary
+
+| Category | Status |
+|---|---|
+| UI Automation | Passed |
+| API Automation | Passed |
+| Chromium | Passed |
+| Firefox | Passed |
+| WebKit | Passed |
+| Smoke Tests | Passed |
+| Regression Tests | Passed |
+| Negative Tests | Passed |
+| End-to-End Tests | Passed |
+| GitHub Actions CI | Passed |
 
 ---
 
@@ -369,6 +367,25 @@ This framework follows:
 - Reusable assertion utilities
 - Environment-based configuration
 - Clear separation of tests, pages, API clients, fixtures, and utilities
+- Reliable locator strategies
+- Cross-browser compatibility
+- Maintainable and scalable test architecture
+
+---
+
+## Project Highlights
+
+- Designed a maintainable automation framework using the Page Object Model.
+- Implemented reusable custom Playwright fixtures.
+- Separated test logic, page actions, test data, API clients, and assertions.
+- Automated both positive and negative test scenarios.
+- Implemented UI and API testing within the same framework.
+- Added cross-browser execution using Chromium, Firefox, and WebKit.
+- Configured environment variables using dotenv.
+- Integrated automated execution with GitHub Actions.
+- Added failure artifacts including screenshots, videos, and traces.
+- Used test tags for smoke, regression, negative, and end-to-end execution.
+- Maintained the project using Git and GitHub.
 
 ---
 
@@ -399,17 +416,3 @@ Aspiring QA Automation Engineer / SDET
 ## Repository
 
 [GitHub Repository](https://github.com/keerthiBunga04/Playwright-DemoBlaze-Automation-Framework)
-
-## Test Execution Summary
-
-| Category | Status |
-|---|---|
-| UI Automation | Passed |
-| API Automation | Passed |
-| Chromium | Passed |
-| Firefox | Passed |
-| WebKit | Passed |
-| Smoke Tests | Passed |
-| Regression Tests | Passed |
-| Negative Tests | Passed |
-| GitHub Actions CI | Passed |
