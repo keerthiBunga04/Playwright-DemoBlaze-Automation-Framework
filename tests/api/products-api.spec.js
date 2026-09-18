@@ -97,4 +97,37 @@ test.describe('DemoBlaze Products API', () => {
         }
     );
 
+
+    test(
+        'GET products should contain valid product categories @regression',
+        async ({ request }) => {
+            const productApi = new ProductApiClient(request);
+
+            const response = await productApi.getAllProducts();
+
+            await ApiAssertions.expectSuccessfulResponse(response);
+
+            const responseBody = await response.json();
+
+            ApiAssertions.expectObject(responseBody);
+            ApiAssertions.expectProperty(responseBody, 'Items');
+            ApiAssertions.expectArray(responseBody.Items);
+            ApiAssertions.expectNotEmpty(responseBody.Items);
+
+            const expectedCategories = [
+                'phone',
+                'notebook',
+                'monitor'
+            ];
+
+            for (const product of responseBody.Items) {
+                ApiAssertions.expectString(product.cat);
+
+                expect(expectedCategories).toContain(
+                    product.cat.toLowerCase()
+                );
+            }
+        }
+    );
+
 });

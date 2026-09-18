@@ -1,4 +1,7 @@
+const { expect } = require('@playwright/test');
+
 class ProductPage {
+
     constructor(page) {
         this.page = page;
 
@@ -16,49 +19,53 @@ class ProductPage {
 
     // Select any product from the homepage
     async selectProduct(productName) {
+
         const productLink = this.page.getByRole('link', {
             name: productName,
             exact: true
         });
 
-        await productLink.waitFor({
-            state: 'visible',
-            timeout: 15000
+        await expect(productLink).toBeVisible({
+            timeout: 30000
         });
 
-        // Click product and wait for product-page navigation
-        await Promise.all([
-            this.page.waitForURL(/prod\.html\?idp_=\d+/, {
-                waitUntil: 'commit',
-                timeout: 30000
-            }),
-            productLink.click()
-        ]);
+        // Click product without depending on browser-specific navigation timing
+        await productLink.click();
 
-        // Verify product details page is loaded
-        await this.productTitle.waitFor({
-            state: 'visible',
-            timeout: 15000
+        // Wait until product details are actually available
+        await expect(this.productTitle).toBeVisible({
+            timeout: 30000
         });
 
-        await this.addToCartButton.waitFor({
-            state: 'visible',
-            timeout: 15000
+        await expect(this.addToCartButton).toBeVisible({
+            timeout: 30000
         });
     }
 
     // Get product title
     async getProductTitle() {
+        await expect(this.productTitle).toBeVisible({
+            timeout: 30000
+        });
+
         return await this.productTitle.textContent();
     }
 
     // Get product price
     async getProductPrice() {
+        await expect(this.productPrice).toBeVisible({
+            timeout: 30000
+        });
+
         return await this.productPrice.textContent();
     }
 
     // Click Add to Cart
     async clickAddToCart() {
+        await expect(this.addToCartButton).toBeVisible({
+            timeout: 30000
+        });
+
         await this.addToCartButton.click();
     }
 }

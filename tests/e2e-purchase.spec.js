@@ -5,7 +5,6 @@ const checkoutData = require('../fixtures/checkout.json');
 
 const { acceptDialog } = require('../utils/Helper');
 
-
 test(
     'Verify complete end-to-end purchase flow @e2e @smoke @regression',
     async ({
