@@ -1,8 +1,5 @@
 const { test, expect } = require('../fixtures/test-fixtures');
 
-const products = require('../fixtures/products.json');
-const checkoutData = require('../fixtures/checkout.json');
-
 const { acceptDialog } = require('../utils/Helper');
 
 test(
@@ -12,14 +9,16 @@ test(
         homePage,
         productPage,
         cartPage,
-        checkoutPage
+        checkoutPage,
+        testData
     }) => {
+
+        const product = testData.products.mobile;
+        const customer = testData.checkout.customer;
 
         await homePage.openWebsite();
 
-        await productPage.selectProduct(
-            products.mobile.name
-        );
+        await productPage.selectProduct(product.name);
 
         const productTitle =
             await productPage.getProductTitle();
@@ -27,29 +26,21 @@ test(
         const productPrice =
             await productPage.getProductPrice();
 
-        expect(productTitle).toContain(
-            products.mobile.name
-        );
+        expect(productTitle).toContain(product.name);
 
-        expect(productPrice).toContain(
-            products.mobile.price
-        );
+        expect(productPrice).toContain(product.price);
 
         const [dialogMessage] = await Promise.all([
             acceptDialog(page),
             productPage.clickAddToCart()
         ]);
 
-        expect(dialogMessage).toContain(
-            'Product added'
-        );
+        expect(dialogMessage).toContain('Product added');
 
         await homePage.clickCart();
 
         const productInCart =
-            await cartPage.isProductInCart(
-                products.mobile.name
-            );
+            await cartPage.isProductInCart(product.name);
 
         expect(productInCart).toBeTruthy();
 
@@ -57,7 +48,7 @@ test(
             await cartPage.getTotalPrice();
 
         expect(totalPrice).toBe(
-            products.mobile.price.replace('$', '')
+            product.price.replace('$', '')
         );
 
         await cartPage.clickPlaceOrder();
@@ -65,12 +56,12 @@ test(
         await checkoutPage.verifyCheckoutModalVisible();
 
         await checkoutPage.enterCustomerDetails(
-            checkoutData.customer.name,
-            checkoutData.customer.country,
-            checkoutData.customer.city,
-            checkoutData.customer.card,
-            checkoutData.customer.month,
-            checkoutData.customer.year
+            customer.name,
+            customer.country,
+            customer.city,
+            customer.card,
+            customer.month,
+            customer.year
         );
 
         await checkoutPage.clickPurchase();

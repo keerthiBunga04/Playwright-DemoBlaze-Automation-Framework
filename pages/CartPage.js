@@ -5,19 +5,17 @@ class CartPage {
     constructor(page) {
         this.page = page;
 
-        // Cart Items
+        // Cart items
         this.cartItems = page.locator('#tbodyid tr');
 
-        // Cart Total
+        // Cart total
         this.totalPrice = page.locator('#totalp');
 
         // Place Order
         this.placeOrderButton = page.getByRole('button', {
-            name: 'Place Order'
+            name: 'Place Order',
+            exact: true
         });
-
-        // Checkout Modal
-        this.checkoutModal = page.locator('#orderModal');
     }
 
     // Get all cart items
@@ -35,6 +33,11 @@ class CartPage {
             hasText: productName
         });
 
+        // Wait for the actual product row to appear
+        await expect(product).toHaveCount(1, {
+            timeout: 30000
+        });
+
         await expect(product).toBeVisible({
             timeout: 30000
         });
@@ -48,12 +51,13 @@ class CartPage {
             hasText: productName
         });
 
-        await expect(product).toBeVisible({
+        await expect(product).toHaveCount(1, {
             timeout: 30000
         });
 
         await product.getByRole('link', {
-            name: 'Delete'
+            name: 'Delete',
+            exact: true
         }).click();
     }
 
@@ -66,17 +70,13 @@ class CartPage {
         return await this.totalPrice.textContent();
     }
 
-    // Click Place Order and wait for checkout modal
+    // Click Place Order
     async clickPlaceOrder() {
         await expect(this.placeOrderButton).toBeVisible({
             timeout: 30000
         });
 
         await this.placeOrderButton.click();
-
-        await expect(this.checkoutModal).toBeVisible({
-            timeout: 30000
-        });
     }
 }
 
