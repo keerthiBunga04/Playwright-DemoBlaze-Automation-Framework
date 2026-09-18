@@ -1,5 +1,6 @@
 # Playwright DemoBlaze Automation Framework
 
+[![Playwright Tests](https://github.com/keerthiBunga04/Playwright-DemoBlaze-Automation-Framework/actions/workflows/playwright.yml/badge.svg)](https://github.com/keerthiBunga04/Playwright-DemoBlaze-Automation-Framework/actions/workflows/playwright.yml)
 A scalable end-to-end test automation framework built using Playwright, JavaScript, and the Page Object Model design pattern.
 
 The framework automates UI workflows and API validations for the DemoBlaze application across Chromium, Firefox, and WebKit browsers.
